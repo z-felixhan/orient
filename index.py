@@ -1,11 +1,15 @@
 from flask import Flask, json, jsonify, request
+from flask_cors import CORS
+import os
 import requests
 import yaml
 
 app = Flask(__name__)
+dir = os.path.dirname(os.path.realpath(__file__))
+CORS(app)
 
 # Load config
-with open('config.yml') as c:
+with open(dir + '/config.yml') as c:
     config = yaml.load(c, Loader=yaml.FullLoader)
     OPENWEATHERMAP_API_KEY = config['OPENWEATHERMAP']['API_KEY']
 
