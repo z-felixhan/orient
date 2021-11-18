@@ -27,7 +27,7 @@ def openweathermap_weather():
         return json.loads(requests.get(f"http://api.openweathermap.org/data/2.5/weather?q={request.args.get('q')}&appid={OPENWEATHERMAP_API_KEY}").content)
 
 
-@app.route("/gc/gstrate")
+@app.route("/gc/gstrate", methods=['GET'])
 # https://cra-arc.api.canada.ca/en/detail?api=GSTRate
 def gc_gstrate():
     return json.loads(requests.get(f"https://gstrate-cra-arc.api.canada.ca/ebci/ghnf/api/ext/v1/rates", headers={"user-key": GC_GSTRATE_API_KEY}).content)
