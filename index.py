@@ -13,11 +13,13 @@ CORS(app)
 with open(dir + '/config.yml') as c:
     config = yaml.load(c, Loader=yaml.FullLoader)
     GC_GSTRATE_API_KEY = config['GC']['GSTRATE']['API_KEY']
+    GC_WAGES_API_KEY = config['GC']['WAGES']['API_KEY']
     OPENWEATHERMAP_API_KEY = config['OPENWEATHERMAP']['API_KEY']
     RIOT_API_KEY = config['RIOT']['API_KEY']
 
 # Load data
 NOC = data.NOC
+PRUID = data.PRUID
 
 
 @app.route('/')
@@ -31,6 +33,12 @@ def index():
 # https://cra-arc.api.canada.ca/en/detail?api=GSTRate
 def gc_gstrate():
     return json.loads(requests.get(f'https://gstrate-cra-arc.api.canada.ca/ebci/ghnf/api/ext/v1/rates', headers={'user-key': GC_GSTRATE_API_KEY}).content)
+
+
+@app.route('/gc/wages/<string:noc>', methods=['GET'])
+# https://esdc-edsc.api.canada.ca/en/detail?api=lmi-wages
+def gc_wages(noc):
+    return jsonify(json.loads(requests.get(f'https://lmi-wages-esdc-edsc-apicast-production.api.canada.ca/clmix-wsx/gcapis/wages/ca?noc={noc}', headers={'Accept': 'application/json', 'user-key': GC_WAGES_API_KEY}).content))
 
 
 @app.route('/openweathermap/weather', methods=['GET'])
@@ -48,6 +56,11 @@ def riotgames_lol_get_summoner_by_summoner_name(region, summonerName):
 
 ### CUSTOM ###
 
-@app.route('/noc/2016/v1')
-def gc_noc_2016():
+@app.route('/noc')
+def gc_noc():
     return jsonify(NOC)
+
+
+@app.route('/pruid')
+def gc_pruid():
+    return jsonify(PRUID)
