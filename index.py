@@ -48,6 +48,6 @@ def riotgames_lol_get_summoner_by_summoner_name(region, summonerName):
 
 ### CUSTOM ###
 
-@app.route('/noc/v1/2016')
+@app.route('/noc/2016/v1')
 def gc_noc_2016():
     return jsonify(NOC)
